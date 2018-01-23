@@ -28,6 +28,12 @@ class AutoComplete extends Component {
         this.count = -1;
     }
 
+    componentDidUpdate() {
+        //let liCollection = document.getElementById('ulList').getElementsByTagName('li');
+        //this.liNodesArray = Array.prototype.slice.call(liCollection, 0);
+        this.count = -1;
+    }
+
     handleChange(value) {
         this.setState({ searchTerm: value });
         this.delayedFetchMatches();
@@ -45,9 +51,10 @@ class AutoComplete extends Component {
             }
             
             //let idx = this.count % this.liNodesArray.length;
-            let idx = (this.count % this.liNodesArray.length + this.liNodesArray.length) % this.liNodesArray.length;
-            console.log(`idx: ${idx}, count: ${this.count}, array length: ${this.liNodesArray.length}`);
+            var idx = (this.count % this.liNodesArray.length + this.liNodesArray.length) % this.liNodesArray.length;
+            //console.log(`idx: ${idx}, count: ${this.count}, array length: ${this.liNodesArray.length}`);
             this.liNodesArray[idx].classList.add('selected');
+            var a = 2;
         } else if (event.keyCode === 40) { // On key down
             //this.setState({ count: this.state.count + 1 });
             this.count = this.count + 1;
@@ -55,8 +62,8 @@ class AutoComplete extends Component {
                 this.liNodesArray[i].classList.remove('selected');
             }
             //let idx = this.count % this.liNodesArray.length;
-            let idx = (this.count % this.liNodesArray.length + this.liNodesArray.length) % this.liNodesArray.length;
-            console.log(`idx: ${idx}, count: ${this.count}, array length: ${this.liNodesArray.length}`);
+            var idx = (this.count % this.liNodesArray.length + this.liNodesArray.length) % this.liNodesArray.length;
+            //console.log(`idx: ${idx}, count: ${this.count}, array length: ${this.liNodesArray.length}`);
             this.liNodesArray[idx].classList.add('selected');
         }
     }
