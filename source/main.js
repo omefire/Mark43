@@ -6,11 +6,21 @@ import AutoComplete from './components/autocomplete';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
-import { createStore } from 'redux';
+import { createStore, applyMiddleware } from 'redux';
+import thunkMiddleware from 'redux-thunk';
 
 import reducer from './reducers';
 
-let store = createStore(reducer);
+const initialState = {
+    stringToMatch: '', 
+    isFetchingMatches: false, 
+    matches: []
+};
+const store = createStore(
+    reducer, 
+    initialState, 
+    applyMiddleware(thunkMiddleware)
+);
 
 ReactDOM.render(
     <Provider store={store}>
