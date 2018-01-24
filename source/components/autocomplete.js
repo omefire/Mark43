@@ -88,7 +88,7 @@ class AutoComplete extends Component {
                     <div id='list'>
                         <ul id='ulList'>
                             {this.props.matches.map(match => {
-                                return (<li key={match} value={match}><a href='#'>{match}</a></li>)
+                                return (<li key={match} value={match}><a href='#' dangerouslySetInnerHTML={{__html: match}}></a></li>)
                             })}
                         </ul>
                     </div>
