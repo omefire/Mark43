@@ -23,57 +23,49 @@ class AutoComplete extends Component {
     }
 
     componentDidMount() {
-        //let liCollection = document.getElementById('ulList').getElementsByTagName('li');
-        //this.liNodesArray = Array.prototype.slice.call(liCollection, 0);
-        this.count = -1;
-    }
-
-    componentDidUpdate() {
-        //let liCollection = document.getElementById('ulList').getElementsByTagName('li');
-        //this.liNodesArray = Array.prototype.slice.call(liCollection, 0);
         this.count = -1;
     }
 
     handleChange(value) {
+        if(!value) {
+            this.setState({ searchTerm: '' });
+            let ulElt = document.getElementById('ulList');
+            while(ulElt.firstChild) {
+                ulElt.removeChild(ulElt.firstChild);
+            }
+            return;
+        }
         this.setState({ searchTerm: value });
         this.delayedFetchMatches();
+        this.count = -1;
 
         // TODO: Wait for a few seconds before sending request (done)
         // TODO: Whenever the search string is updated, clear dropdown, issue another request & load those results into dropdown
     }
 
     handleKeyDown(event) {
-
-        // On first display of the page, there's no names to walk through
-        /*if (this.liNodesArray.length === 0) {
-            return;
-        }*/
-
         let liCollection = document.getElementById('ulList').getElementsByTagName('li');
         this.liNodesArray = Array.prototype.slice.call(liCollection, 0);
 
         if (event.keyCode === 38) { // On key up
-            //this.setState({ count: this.state.count - 1 });
             this.count = this.count - 1;
             for (let i = 0; i < this.liNodesArray.length; i++) {
                 this.liNodesArray[i].classList.remove('selected');
             }
 
-            //let idx = this.count % this.liNodesArray.length;
             var idx = (this.count % this.liNodesArray.length + this.liNodesArray.length) % this.liNodesArray.length;
-            //console.log(`idx: ${idx}, count: ${this.count}, array length: ${this.liNodesArray.length}`);
             this.liNodesArray[idx].classList.add('selected');
-            var a = 2;
+            let val = this.liNodesArray[idx].getAttribute('value');
+            this.setState({ searchTerm: val });
         } else if (event.keyCode === 40) { // On key down
-            //this.setState({ count: this.state.count + 1 });
             this.count = this.count + 1;
             for (let i = 0; i < this.liNodesArray.length; i++) {
                 this.liNodesArray[i].classList.remove('selected');
             }
-            //let idx = this.count % this.liNodesArray.length;
             var idx = (this.count % this.liNodesArray.length + this.liNodesArray.length) % this.liNodesArray.length;
-            //console.log(`idx: ${idx}, count: ${this.count}, array length: ${this.liNodesArray.length}`);
             this.liNodesArray[idx].classList.add('selected');
+            let val = this.liNodesArray[idx].getAttribute('value');
+            this.setState({ searchTerm: val });
         }
     }
 
@@ -96,7 +88,7 @@ class AutoComplete extends Component {
                     <div id='list'>
                         <ul id='ulList'>
                             {this.props.matches.map(match => {
-                                return (<li key={match}><a href='#'>{match}</a></li>)
+                                return (<li key={match} value={match}><a href='#'>{match}</a></li>)
                             })}
                         </ul>
                     </div>
