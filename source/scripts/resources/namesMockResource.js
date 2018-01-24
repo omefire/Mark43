@@ -1,5 +1,6 @@
 import faker from 'faker';
 import { map, range } from 'lodash';
+import SuffixTree from './SuffixTree';
 
 /**
  * List of all names 
@@ -20,9 +21,15 @@ function generateData(count = 10000) {
  */
 function filterNames(input) {
     // Do your filtering here and use ALL_NAMES
-    return generateData(10).map(s => {
-        return `<b>${s.substring(0,2)}</b>${s.substring(3)}`;
-    });
+    let matches = [];
+    for (let i = 0; i < ALL_NAMES.length; i++) {
+        let st = SUFFIX_TREES[i];
+        let match = st.findPattern(input);
+        if (match) {
+            matches.push(match);
+        }
+    }
+    return matches;
 }
 
 /**
@@ -31,7 +38,19 @@ function filterNames(input) {
  * @param  {Function} cb    callback
  */
 export function getNames(input, cb) {
-    setTimeout(() => {
-        cb(filterNames(input));
-    }, 300);
+    if (!ALL_NAMES_PROCESSED) {
+        processNames();
+    }
+    return cb(filterNames(input));
 };
+
+
+// TODO: Use promises ?
+let ALL_NAMES_PROCESSED = false;
+let SUFFIX_TREES = [];
+function processNames() {
+    for (let i = 0; i < ALL_NAMES.length; i++) {
+        SUFFIX_TREES.push(new SuffixTree(ALL_NAMES[i]));
+    }
+    ALL_NAMES_PROCESSED = true;
+}
