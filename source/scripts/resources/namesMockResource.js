@@ -20,7 +20,7 @@ function generateData(count = 10000) {
  */
 function filterNames(input) {
     // Do your filtering here and use ALL_NAMES
-    return input;
+    return generateData(10);
 }
 
 /**

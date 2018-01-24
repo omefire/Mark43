@@ -23,8 +23,8 @@ class AutoComplete extends Component {
     }
 
     componentDidMount() {
-        let liCollection = document.getElementById('ulList').getElementsByTagName('li');
-        this.liNodesArray = Array.prototype.slice.call(liCollection, 0);
+        //let liCollection = document.getElementById('ulList').getElementsByTagName('li');
+        //this.liNodesArray = Array.prototype.slice.call(liCollection, 0);
         this.count = -1;
     }
 
@@ -45,9 +45,12 @@ class AutoComplete extends Component {
     handleKeyDown(event) {
 
         // On first display of the page, there's no names to walk through
-        if (this.liNodesArray.length === 0) {
+        /*if (this.liNodesArray.length === 0) {
             return;
-        }
+        }*/
+
+        let liCollection = document.getElementById('ulList').getElementsByTagName('li');
+        this.liNodesArray = Array.prototype.slice.call(liCollection, 0);
 
         if (event.keyCode === 38) { // On key up
             //this.setState({ count: this.state.count - 1 });
