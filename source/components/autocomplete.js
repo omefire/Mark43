@@ -43,13 +43,19 @@ class AutoComplete extends Component {
     }
 
     handleKeyDown(event) {
+
+        // On first display of the page, there's no names to walk through
+        if (this.liNodesArray.length === 0) {
+            return;
+        }
+
         if (event.keyCode === 38) { // On key up
             //this.setState({ count: this.state.count - 1 });
             this.count = this.count - 1;
             for (let i = 0; i < this.liNodesArray.length; i++) {
                 this.liNodesArray[i].classList.remove('selected');
             }
-            
+
             //let idx = this.count % this.liNodesArray.length;
             var idx = (this.count % this.liNodesArray.length + this.liNodesArray.length) % this.liNodesArray.length;
             //console.log(`idx: ${idx}, count: ${this.count}, array length: ${this.liNodesArray.length}`);
@@ -86,9 +92,9 @@ class AutoComplete extends Component {
                 {!this.props.isFetchingMatches &&
                     <div id='list'>
                         <ul id='ulList'>
-                            <li><a href='#'>Small</a></li>
-                            <li><a href='#'>Medium</a></li>
-                            <li><a href='#'>Large</a></li>
+                            {this.props.matches.map(match => {
+                                return (<li key={match}><a href='#'>{match}</a></li>)
+                            })}
                         </ul>
                     </div>
                 }
