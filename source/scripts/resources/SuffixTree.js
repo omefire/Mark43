@@ -1,30 +1,28 @@
 
 class Match {
-    constructor(pattern, name, startingIndex, endingIndex) {
+    constructor(pattern, name) {
         this.pattern = pattern;
         this.name = name;
-        this.startingIndex = startingIndex;
-        this.endingIndex = endingIndex;
     }
 }
 
 class Node {
-    constructor(val = '', index) {
+    constructor(val = '') {
         this.value = val;
         this.children = new Map();
-        this.index = index; // position of the character represented by this node within the text
     }
 
-    addChild(ch, index) {
+    addChild(ch) {
         let node = this.children.get(ch);
         if (!node) {
-            node = new Node(ch, index);
+            node = new Node(ch);
             this.children.set(ch, node);
         }
         return node;
     }
 }
 
+// TODO: Compress this suffix tree
 export default class SuffixTree {
     constructor(str) {
         if (!str) {
@@ -33,11 +31,11 @@ export default class SuffixTree {
         this.root = new Node('', -1);
         this.name = str;
         for (let i = 0; i < str.length; i++) {
-            this.addString(str.slice(i).toLowerCase(), i);
+            this.addString(str.slice(i).toLowerCase());
         }
     }
 
-    addString(str, startIndex) {
+    addString(str) {
         if(!str) {
             return;
         }
@@ -45,7 +43,7 @@ export default class SuffixTree {
         let node = this.root;
         for(let i = 0; i < str.length; i++) {
             let ch = str[i];
-            node = node.addChild(ch, i + startIndex);
+            node = node.addChild(ch);
         }
     }
 
@@ -56,7 +54,6 @@ export default class SuffixTree {
             return null;
         }
         let orginalPattern = pattern;
-        let firstNodeMatched = null;
         pattern = pattern.toLowerCase();
         let node = this.root;
         for(let i = 0; i < pattern.length; i++) {
@@ -64,13 +61,8 @@ export default class SuffixTree {
             if(!n) {
                 return null; // pattern not found
             }
-            if(!firstNodeMatched) {
-                firstNodeMatched = n;
-            }
             node = n;
         }
-
-        let startingIndex = firstNodeMatched.index;
-        return new Match(orginalPattern, this.name, startingIndex, (startingIndex + pattern.length - 1));
+        return new Match(orginalPattern, this.name);
     }
 }

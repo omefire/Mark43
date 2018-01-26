@@ -20,7 +20,6 @@ function generateData(count = 10000) {
  * @return {String[]}           Filtered names
  */
 function filterNames(input) {
-    // Do your filtering here and use ALL_NAMES
     let matches = [];
     for (let i = 0; i < ALL_NAMES.length; i++) {
         let st = SUFFIX_TREES[i];
@@ -45,7 +44,8 @@ export function getNames(input, cb) {
 };
 
 
-// TODO: Use promises ?
+// TODO: Use promises insted of callback ?
+// Process all the names and store them in suffix trees to make pattern searching faster
 let ALL_NAMES_PROCESSED = false;
 let SUFFIX_TREES = [];
 function processNames() {
