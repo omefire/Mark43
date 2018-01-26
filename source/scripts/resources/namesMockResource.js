@@ -40,7 +40,7 @@ export function getNames(input, cb) {
     if (!ALL_NAMES_PROCESSED) {
         processNames();
     }
-    return cb(filterNames(input));
+    cb(filterNames(input));
 };
 
 
